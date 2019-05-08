@@ -8,9 +8,9 @@
 {{#message}}
     <b>{{message}}</b>
 {{/message}}
-<form method="post">
+<form action="/registration" method="post">
     <input type="text" name="username" placeholder="Login"/>
-    <input type="password" name="username" placeholder="Password"/>
+    <input type="password" name="password" placeholder="Password"/>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
     <input type="submit" value="Sign Up"/>
 </form>

@@ -5,9 +5,10 @@
     <title>Sign In</title>
 </head>
 <body>
+<b>Login</b>
 <form action="/login" method="post">
     <input type="text" name="username" placeholder="Login"/>
-    <input type="password" name="username" placeholder="Password"/>
+    <input type="password" name="password" placeholder="Password"/>
     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
     <input type="submit" value="Sign In"/>
 </form>

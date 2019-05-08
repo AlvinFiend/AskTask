@@ -1,0 +1,55 @@
+.post {
+	display: flex;
+
+	width: 100%;
+	height: 260px;
+	margin-top: 25px;
+
+	background: radial-gradient(245.10px at 51.98% 50%, rgba(61, 110, 66, 0.25) 0%, rgba(0, 255, 41, 0.285) 100%);
+	border: 1px solid rgba(158, 158, 158, 0.5);
+	box-sizing: border-box;
+	box-shadow: 3px 5px 5px rgba(123, 112, 147, 0.5);
+	border-radius: 10px;
+	transition: 1s;
+}
+
+.post:hover {
+	background: grey;
+	transition: 1s;
+}
+
+.post-image {
+	width: 100px;
+	height: 100px;
+	margin-left: 5%;
+	margin-top: 25px;
+
+	background: gray;
+}
+
+.description {
+	margin-left: 5%;
+}
+
+.add-post {
+	background: none;
+}
+
+.add-post img {
+	margin: auto;
+	width: 100px;
+	height: 100px;
+}
+
+input[name="title"], input[name="describe"] {
+	width: 100%;
+}
+
+input[name="add-btn"] {
+	width: 20%;
+	margin-left: 0;
+}
+
+input[name="describe"] {
+	height: 100px;
+}

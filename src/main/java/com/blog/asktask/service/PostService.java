@@ -11,4 +11,13 @@ public interface PostService {
     List<Post> getAll();
 
     List<Post> getByTitle(String title);
+
+    void remove(Post post);
+
+    void removeByTitle(String title);
+
+    void removeById(long id);
+    default void removeById(String id){
+        this.removeById(Long.valueOf(id));
+    }
 }

@@ -3,37 +3,31 @@ package com.blog.asktask.controller;
 import com.blog.asktask.domain.Post;
 import com.blog.asktask.domain.User;
 import com.blog.asktask.service.PostService;
-import com.blog.asktask.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/posts")
 public class PostController {
 
-    private final UserService userService;
     private final PostService postService;
 
+    @Value("${upload.path}")
+    private String uploadPath;
+
     @Autowired
-    public PostController(UserService userService, PostService postService) {
-        this.userService = userService;
+    public PostController(PostService postService) {
         this.postService = postService;
-    }
-
-    @GetMapping
-    public String getAll(Map<String, Object> model) {
-        List<Post> posts = postService.getAll();
-
-        model.put("posts", posts);
-        return "mainstream";
     }
 
     @PostMapping
@@ -41,8 +35,23 @@ public class PostController {
             @AuthenticationPrincipal User user,
             @RequestParam String title,
             @RequestParam String description,
-            Map<String, Object> model) {
-        Post local = new Post(title, description);
+            Map<String, Object> model,
+            @RequestParam("file") MultipartFile file) throws IOException {
+        Post local = new Post(title, description, user);
+
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadFolder = new File(uploadPath);
+            if (!uploadFolder.exists()) {
+                uploadFolder.mkdir();
+            }
+            //generate a primary file id
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFileName = uuidFile + "." + file.getOriginalFilename();
+
+            file.transferTo(new File(uploadPath + "/" + resultFileName));
+
+            local.setFilename(resultFileName);
+        }
 
         postService.save(local);
 
@@ -53,19 +62,9 @@ public class PostController {
         return "mainstream";
     }
 
-    @PostMapping("/filter")
-    public String filter(@RequestParam String filter, Map<String, Object> model) {
-
-        List<Post> posts;
-
-        if (filter != null && !filter.isEmpty()) {
-            posts = postService.getByTitle(filter);
-        } else {
-            posts = postService.getAll();
-        }
-
-        model.put("posts", posts);
-
+    @PostMapping("{id}")
+    public String remove(@AuthenticationPrincipal User user, @PathVariable String id){
+        postService.removeById(id);
         return "mainstream";
     }
 }

@@ -32,4 +32,19 @@ public class PostServiceImpl implements PostService {
     public List<Post> getByTitle(String title) {
         return repository.getByTitle(title);
     }
+
+    @Override
+    public void remove(Post post) {
+        repository.delete(post);
+    }
+
+    @Override
+    public void removeByTitle(String title) {
+        repository.deleteByTitle(title);
+    }
+
+    @Override
+    public void removeById(long id) {
+        repository.deleteById(id);
+    }
 }

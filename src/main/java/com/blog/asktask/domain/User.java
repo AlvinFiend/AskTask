@@ -20,7 +20,7 @@ public class User implements UserDetails {
     private String email;
     private boolean active;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private List<Post> posts;
 
